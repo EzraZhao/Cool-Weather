@@ -10,6 +10,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -64,6 +65,7 @@ public class WeatherActivity extends AppCompatActivity {
     public DrawerLayout drawerLayout;
 
     private Button navButton;
+
     public static final String API_KEY = "52405acd3461444c9715b5cf714827a8";
 
     @Override
@@ -107,6 +109,13 @@ public class WeatherActivity extends AppCompatActivity {
 
         final String weatherId;
 
+        /**
+         * 更改地点后刷新信息更换为原来城市
+         * 该bug由于获取id只在onCreate()方法中，
+         * 而该方法只会在该界面创建时执行，只执行一次.
+         * 下次更改地点后，进行刷新操作，由于该界面已存在，
+         * 并不会再次创建，所以id仍为创建该界面时城市的id
+         */
         if (weatherString != null) {
             //有缓存时直接解析天气数据
             Weather weather = Utility.handleWeatherResponse(weatherString);
@@ -168,6 +177,7 @@ public class WeatherActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 final String responseText = response.body().string();
+                Log.d("WeatherActivity", responseText);
                 final Weather weather = Utility.handleWeatherResponse(responseText);
                 runOnUiThread(new Runnable() {
                     @Override
