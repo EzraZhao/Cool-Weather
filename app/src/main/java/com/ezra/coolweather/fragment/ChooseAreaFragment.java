@@ -93,6 +93,7 @@ public class ChooseAreaFragment extends Fragment {
      */
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -146,7 +147,7 @@ public class ChooseAreaFragment extends Fragment {
     private void queryCities() {
         titleText.setText(selectedProvince.getProvinceName());
         backButton.setVisibility(View.VISIBLE);
-        cityList = DataSupport.where("province = ?",
+        cityList = DataSupport.where("provinceid = ?",
                 String.valueOf(selectedProvince.getId())).find(City.class);
         if (cityList.size() > 0) {
             datdaList.clear();
@@ -171,7 +172,7 @@ public class ChooseAreaFragment extends Fragment {
         titleText.setText(selectedCity.getCityName());
         backButton.setVisibility(View.VISIBLE);
         countyList = DataSupport.where("cityid = ?",
-                String.valueOf(selectedCity.getCityCode())).find(County.class);
+                String.valueOf(selectedCity.getId())).find(County.class);
         if (countyList.size() > 0) {
             datdaList.clear();
             for (County county : countyList) {
@@ -183,8 +184,8 @@ public class ChooseAreaFragment extends Fragment {
         } else {
             int provinceCode = selectedProvince.getProvinceCode();
             int cityCode = selectedCity.getCityCode();
-            String address = "http://guolin.tech/api/china/" + provinceCode + cityCode;
-            queryFromServer(address, "city");
+            String address = "http://guolin.tech/api/china/" + provinceCode + "/" + cityCode;
+            queryFromServer(address, "county");
         }
     }
 
@@ -242,7 +243,7 @@ public class ChooseAreaFragment extends Fragment {
     /**
      * 显示进度对话框
      */
-    private void closeProgressDialog() {
+    private void showProgressDialog() {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(getActivity());
             progressDialog.setMessage("正在加载...");
@@ -254,7 +255,7 @@ public class ChooseAreaFragment extends Fragment {
     /**
      * 关闭进度对话框
      */
-    private void showProgressDialog() {
+    private void closeProgressDialog() {
         if (progressDialog != null) {
             progressDialog.dismiss();
         }
