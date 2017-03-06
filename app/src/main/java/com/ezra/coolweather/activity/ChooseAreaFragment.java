@@ -1,4 +1,4 @@
-package com.ezra.coolweather.fragment;
+package com.ezra.coolweather.activity;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;

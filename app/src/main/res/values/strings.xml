@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Cool Weather</string>
+    <string name="weather_forecast">预报</string>
+    <string name="air_quality_info">空气质量</string>
+    <string name="aqi_index">AQI指数</string>
+    <string name="pm25">PM2.5指数</string>
+    <string name="life_suggestion">生活建议</string>
 </resources>
