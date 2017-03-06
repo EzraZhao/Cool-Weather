@@ -62,12 +62,14 @@ public class WeatherActivity extends AppCompatActivity {
         //使背景图与状态栏融合
         if (Build.VERSION.SDK_INT >= 21) {
             View decorView = getWindow().getDecorView();
+            //该参数表示活动的布局会显示在状态栏上面
             decorView.setSystemUiVisibility(
                     View.SYSTEM_UI_FLAG_FULLSCREEN
                             | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            //将状态栏设置为透明色
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
-        
+
         setContentView(R.layout.activity_weather);
 
         //初始化各控件
