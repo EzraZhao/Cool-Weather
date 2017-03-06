@@ -53,8 +53,6 @@ public class WeatherActivity extends AppCompatActivity {
 
     private ImageView bingPicImg;
 
-    private static final String API_KEY = "52405acd3461444c9715b5cf714827a8";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,7 +113,7 @@ public class WeatherActivity extends AppCompatActivity {
      */
     private void requestWeather(String weatherId) {
         String weatherUrl = "http://guolin.tech/api/weather?cityid="
-                + weatherId + "&key=?" + API_KEY;
+                + weatherId + "&key=52405acd3461444c9715b5cf714827a8";
 
         HttpUtil.sendOkHttpRequest(weatherUrl, new Callback() {
             @Override
