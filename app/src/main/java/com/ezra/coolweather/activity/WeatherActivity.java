@@ -66,6 +66,8 @@ public class WeatherActivity extends AppCompatActivity {
 
     private Button navButton;
 
+    private String weatherId;
+
     public static final String API_KEY = "52405acd3461444c9715b5cf714827a8";
 
     @Override
@@ -107,12 +109,10 @@ public class WeatherActivity extends AppCompatActivity {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String weatherString = prefs.getString("weather", null);
 
-        final String weatherId;
-
         /**
          * 更改地点后刷新信息更换为原来城市
          * 该bug由于获取id只在onCreate()方法中，
-         * 而该方法只会在该界面创建时执行，只执行一次.
+         * 而该方法只会在该界面创建时执行，只执行一次。
          * 下次更改地点后，进行刷新操作，由于该界面已存在，
          * 并不会再次创建，所以id仍为创建该界面时城市的id
          */
@@ -158,6 +158,8 @@ public class WeatherActivity extends AppCompatActivity {
     public void requestWeather(String weatherId) {
         String weatherUrl = "http://guolin.tech/api/weather?cityid="
                 + weatherId + "&key=" + API_KEY;
+        //使weatherId成为全局变量，在每一次请求时都更新当前id
+        this.weatherId = weatherId;
 
         HttpUtil.sendOkHttpRequest(weatherUrl, new Callback() {
             @Override
@@ -177,7 +179,6 @@ public class WeatherActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 final String responseText = response.body().string();
-                Log.d("WeatherActivity", responseText);
                 final Weather weather = Utility.handleWeatherResponse(responseText);
                 runOnUiThread(new Runnable() {
                     @Override
@@ -185,7 +186,7 @@ public class WeatherActivity extends AppCompatActivity {
                         if (weather != null && "ok".equals(weather.status)) {
                             SharedPreferences.Editor editor =
                                     PreferenceManager.getDefaultSharedPreferences(WeatherActivity.this)
-                                    .edit();
+                                            .edit();
                             editor.putString("weather", responseText);
                             editor.apply();
                             showWeatherInfo(weather);
